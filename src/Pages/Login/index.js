@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, TouchableOpacity, Text } from 'react-native';
 
 export default function Login() {
+
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ loading, setLoading ] = useState(false);
+    
+
+
+
  return (
    <View style={styles.container}>
         <Image style={{marginBottom: "15%"}} source={require("../../Assets/logo.png")} />
