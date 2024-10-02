@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, TouchableOpacity, Text } from 'react-native';
 
+import Loading from '../../Components/Loading';
+
 export default function Login() {
 
     const [ email, setEmail ] = useState("");
@@ -8,20 +10,18 @@ export default function Login() {
     const [ loading, setLoading ] = useState(false);
     
 
-
-
  return (
    <View style={styles.container}>
-        <Image style={{marginBottom: "15%"}} source={require("../../Assets/logo.png")} />
+        <Image style={{marginBottom: "10%", width: '70%', height: '50%'}} source={require("../../Assets/logo.png")} />
         <TextInput style={styles.input} placeholder='Digite Seu Email:' />
         <TextInput style={styles.input} placeholder='Digite Sua Senha:' />
         <TouchableOpacity style={styles.button} >
-            <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >Entrar</Text>
+            <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >{loading ? <Loading/> : "Entrar"}</Text>
         </TouchableOpacity>
         <View>
             <Text style={{marginVertical: 6, color: "#FFF", fontSize: 16, marginTop: 18}}>Não Possui Uma Conta?</Text>
             <TouchableOpacity style={{alignItems: 'center', gap: 12}} >
-                <Text style={styles.create} >Crie sua conta</Text>
+                <Text style={styles.create}>Crie sua conta</Text>
             </TouchableOpacity>
         </View>
    </View>
