@@ -10,6 +10,12 @@ export default function Login() {
         <TouchableOpacity style={styles.button} >
             <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >Entrar</Text>
         </TouchableOpacity>
+        <View>
+            <Text style={{marginVertical: 6, color: "#FFF", fontSize: 16, marginTop: 18}}>Não Possui Uma Conta?</Text>
+            <TouchableOpacity style={{alignItems: 'center', gap: 12}} >
+                <Text style={styles.create} >Crie sua conta</Text>
+            </TouchableOpacity>
+        </View>
    </View>
   );
 }
@@ -38,6 +44,12 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 12,
         elevation: 8
+    },
+    create:{
+        color: "#FFF",
+        marginVertical: 6,
+        fontSize: 18,
+        fontWeight: 'bold'
     }
 
 })
