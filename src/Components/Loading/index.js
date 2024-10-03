@@ -14,7 +14,7 @@ export default function Loading() {
         const nextIndex = (currentIndex + 1) % icons.length;
         return icons[nextIndex];
       });
-    }, 1000);
+    }, 800);
 
     return () => clearInterval(intervalId);
   }, []);
