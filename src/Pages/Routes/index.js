@@ -1,11 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Text } from 'react-native';
+
 
 import Home from '../Home';
 import Estudar from '../Estudar';
 import Comunidade from '../Comunidade';
 import Colors from '../../Components/Colors';
+import ButtonNew from '../../Components/ButtonNew';
 
 export default function Routes() {
     
@@ -18,24 +19,13 @@ export default function Routes() {
                 color: Colors.azulEscuro,
                 fontSize: 14,
                 fontWeight: 'bold',
-                marginVertical: 8,
-                marginTop: 0
+      
             },
             tabBarStyle:{
-                borderTopWidth: 0,
-                position: 'absolute',
-                marginBottom: 10,
-                backgroundColor: Colors.white,
-                height: 80,
-                width: '90%',
-                borderRadius: 30,
-                elevation: 10,
-                justifyContent: 'space-between',
-                alignSelf: 'center',
-                left: '5%',
-                right: '5%'
-                // borderTopRightRadius: 30,
-                // borderTopLeftRadius: 30, 
+                height: 70,
+                paddingBottom: 5,
+                paddingTop:5
+                
             },
         }}
     >
@@ -56,36 +46,18 @@ export default function Routes() {
             name="Estudar"
             component={Estudar}
             options={{
-                tabBarLabel: ({ focused, color }) => (
-                    <Text style={{ color: focused ? Colors.white : Colors.white, fontWeight: 'bold', marginBottom:10}} >
-                        Estudar
-                    </Text>
-                ),
-                tabBarItemStyle:{
-                    backgroundColor: Colors.coral,
-                    borderRadius: 60,
-                    borderWidth: 1,
-                    borderColor: Colors.azulClaro,
-                    // position: 'absolute',
-                    // alignSelf: 'center',
-                    justifyContent: 'center',
-                    width: 80,
-                    height: 80
-                },
                 headerShown: false,
-                tabBarIcon: ({ color, size, focused }) => {
-                    if (focused) {
-                        return <Icon name='book-open-variant' size={ size + 24 } color={Colors.white} />
-                    }
-                    return <Icon name='book-outline' size={ size + 4 } color={ Colors.white } />
-                }
+                tabBarLabel: '',
+                tabBarIcon: ({ color, size, focused }) => (
+                   <ButtonNew focused={focused} size={size} />     
+                )
             }}
         />
         <Tab.Screen
             name="Comunidade"
             component={Comunidade}
             options={{
-                
+                headerShown: false,
                 tabBarIcon: ({ color, size, focused }) => {
                     if (focused) {
                         return <Icon name='account-group' size={ size + 16 } color={Colors.azulEscuro}/>
