@@ -24,9 +24,7 @@ export default function App() {
     <NavigationContainer>
       <StatusBar backgroundColor="#F26A50"/>
       
-      {showSplash ? (
-        <Splash /> 
-      ) : ( logado ? <Routes /> : <Login /> )}
+      {showSplash ? ( <Splash /> ) : ( logado ? <Routes /> : <Login /> )}
     </NavigationContainer>
   );
 }
