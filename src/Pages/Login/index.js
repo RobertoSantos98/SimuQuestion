@@ -19,7 +19,7 @@ export default function Login() {
         <TextInput style={styles.input} placeholder='Digite Seu Email:' />
         <TextInput style={styles.input} placeholder='Digite Sua Senha:' />
         <TouchableOpacity style={styles.button} >
-            <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >{loading ? <Loading/> : "Entrar"}</Text>
+            <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >{loading ? <Loading size={40} color={Colors.white}/> : "Entrar"}</Text>
         </TouchableOpacity>
         <View>
             <Text style={{marginVertical: 6, color: "#FFF", fontSize: 16, marginTop: 18}}>Não Possui Uma Conta?</Text>

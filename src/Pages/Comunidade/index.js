@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,7 +31,9 @@ export default function Comunidade() {
 
  return (
    <View style={styles.container} >
-        <Text style={{fontSize: 24, color: Colors.coral, fontWeight: 'bold', marginVertical: 12}} >Perguntas da Comunidade</Text>
+      <View style={styles.titleContainer}>
+        <Text style={{fontSize: 24, color: Colors.white, fontWeight: 'bold', marginVertical: 12}} >Perguntas da Comunidade</Text>
+      </View>
 
         <FlatList
           style={{marginTop: 8}}
@@ -77,6 +79,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.azulMuitoClaro,
     alignItems: 'center'
+  },
+  titleContainer:{
+    backgroundColor: Colors.coral, 
+    width: '100%',
+    alignItems: 'center', 
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    paddingVertical: 12
   },
   listItem:{
     backgroundColor: Colors.white,
