@@ -34,5 +34,6 @@ export default function App() {
         <Splash /> 
       ) : ( logado ? <Routes userName={userName} /> : <Login onLogin={handleLogin} /> )}
     </NavigationContainer>
+    
   );
 }
