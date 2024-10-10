@@ -10,6 +10,7 @@ import Splash from './src/Components/Splash';
 export default function App() {
 
   const [ logado, setLogado ] = useState(true);
+  const [ userName, setUserName ] = useState('');
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -20,13 +21,18 @@ export default function App() {
     return () => clearTimeout(timer); 
   }, []);
 
+  const handleLogin = (userData) => {
+      setLogado(true)
+      setUserName(UserData.email)
+  }
+
   return (
     <NavigationContainer>
       <StatusBar backgroundColor="#F26A50"/>
       
       {showSplash ? (
         <Splash /> 
-      ) : ( logado ? <Routes /> : <Login /> )}
+      ) : ( logado ? <Routes userName={userName} /> : <Login onLogin={handleLogin} /> )}
     </NavigationContainer>
   );
 }

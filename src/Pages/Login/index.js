@@ -3,22 +3,58 @@ import { View, StyleSheet, TextInput, Image, TouchableOpacity, Text, Modal } fro
 
 import Loading from '../../Components/Loading';
 import Colors from '../../Components/Colors';
+import UserServices from '../../Components/UserServices';
 
-export default function Login() {
+export default function Login( {onLogin} ) {
+
 
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
-    const [ loading, setLoading ] = useState(true);
+    const [ emailRegister, setEmailRegister ] = useState();
+    const [ nomeRegister, setNomeRegister ] = useState();
+    const [ passwordRegister, setPasswordRegister ] = useState();
+
+    const [ loading, setLoading ] = useState(false);
     const [ modalVisible, setModalVisible] = useState(false);
+
+    
+    const handleSubmit = async () => {
+        const usuarioLogin = {
+            email: email,
+            senha: password
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await UserServices.Login(usuarioLogin);
+            if (response) {
+                const userData ={
+                    name: email,
+                    token: response.token
+                }
+                onLogin(userData);
+            } else {
+                alert("Verifique suas credenciais;");
+            }
+            
+        } catch (error) {
+            alert("Algo deu MUITO ERRADO.");
+        } finally {
+            setLoading(false);
+        }
+
+
+    }
     
 
  return (
    <View style={styles.container}>
         <Image style={{marginBottom: "10%", width: '70%', height: '50%'}} source={require("../../Assets/logo.png")} />
-        <TextInput style={styles.input} placeholder='Digite Seu Email:' />
-        <TextInput style={styles.input} placeholder='Digite Sua Senha:' />
-        <TouchableOpacity style={styles.button} >
+        <TextInput style={styles.input} placeholder='Digite Seu Email:' value={email} onChangeText={setEmail}/>
+        <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={password} onChangeText={setPassword} />
+        <TouchableOpacity style={styles.button} onPress={handleSubmit} >
             <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >{loading ? <Loading size={40} color={Colors.white}/> : "Entrar"}</Text>
         </TouchableOpacity>
         <View>
@@ -38,9 +74,9 @@ export default function Login() {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <Text style={[styles.title]} allowFontScaling={false}>Preencha os dados abaixo </Text>
-                    <TextInput style={styles.input} placeholder='Digite Seu Nome:' />
-                    <TextInput style={styles.input} placeholder='Digite Seu Email:' />
-                    <TextInput style={styles.input} placeholder='Digite Sua Senha:' />
+                    <TextInput style={styles.input} placeholder='Digite Seu Email:' value={emailRegister} onChangeText={setEmailRegister} />
+                    <TextInput style={styles.input} placeholder='Digite Seu Nome:' value={nomeRegister} onChangeText={setNomeRegister} />
+                    <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={passwordRegister} onChangeText={setPasswordRegister} />
                     <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
                         <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >Criar</Text>
                     </TouchableOpacity>
@@ -95,7 +131,8 @@ const styles = StyleSheet.create({
         width:'90%',
         backgroundColor:"#325B70",
         borderRadius: 12,
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: Colors.coral,
         alignItems:'center',
         justifyContent:'center'
     },

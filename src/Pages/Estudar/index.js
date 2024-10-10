@@ -13,19 +13,19 @@ export default function Estudar() {
     const startRotation = () => {
       
       Animated.timing(rotateValue, {
-        toValue: 1, // Valor final da animação
-        duration: 500, // Duração da animação em milissegundos
-        useNativeDriver: true, // Usa a driver nativa para melhor desempenho
+        toValue: 1, 
+        duration: 500, 
+        useNativeDriver: true,
       }).start(() => {
         
         rotateValue.setValue(0);
       });
     };
   
-    // Interpolando o valor para criar o efeito de rotação
+    
     const rotation = rotateValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '180deg'], // Rotaciona de 0 a 180 graus no eixo Y
+      outputRange: ['0deg', '180deg'], 
     });
 
  return (

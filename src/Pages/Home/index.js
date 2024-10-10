@@ -9,6 +9,9 @@ export default function Home() {
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
 
+
+
+
  return (
    <View style={styles.container} >
       <View style={{flexDirection: 'row', justifyContent:'space-between', marginHorizontal: 20, marginVertical: 20, alignItems: 'flex-end'}} >
@@ -54,11 +57,21 @@ export default function Home() {
         </View>
 
         <View style={{marginHorizontal: 20}}>
-            <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Últimas Perguntas Enviadas</Text>
-
-            <FlatList>
-
+          <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Escola os temas para Estudar</Text>
+          <View style={{gap : 4}}>
+            <FlatList style={styles.itemOption}>
+              <Text style={{marginHorizontal: 8}}>React</Text>
             </FlatList>
+          </View>
+          <View>
+
+          </View>
+        </View>
+
+        <View style={{marginHorizontal: 20, marginVertical: 8}}>
+            <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Últimas Perguntas Enviadas</Text>
+            
+        
         </View>
         
 
@@ -66,6 +79,7 @@ export default function Home() {
    </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container:{
@@ -98,5 +112,12 @@ const styles = StyleSheet.create({
     borderRadius:12,
     marginVertical: 10,
     elevation: 8
+  },
+  itemOption:{
+    backgroundColor: Colors.white,
+    width: '45%',
+    borderRadius: 12,
+    paddingVertical: 6,
+    borderWidth: 1
   }
 })

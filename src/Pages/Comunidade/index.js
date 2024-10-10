@@ -7,12 +7,10 @@ import Colors from '../../Components/Colors';
 
 export default function Comunidade() {
 
-    const baseURL = 'https://api.github.com';
-    const perPage = 20;
+    const baseURL = 'https://s1207vdg9c.execute-api.us-east-1.amazonaws.com/allquestions';
 
     const [ data, setData ] = useState([]);
     const [ loading, setLoading ] = useState(false);
-    const [ page, setPage ] = useState(1);
 
     useEffect(() => {
         LoadAPI();
@@ -21,10 +19,9 @@ export default function Comunidade() {
     async function LoadAPI() {
       setLoading(true);
 
-      const response = await axios.get(`${baseURL}/search/repositories?q=react&per_page=${perPage}&page=${page}`);
+      const response = await axios.get(baseURL);
 
-      setData([...data, ...response.data.items]);
-      setPage(page + 1);
+      setData([...data, ...response.data]);
       setLoading(false);
     }
 
@@ -36,13 +33,13 @@ export default function Comunidade() {
       </View>
 
         <FlatList
-          style={{marginTop: 8}}
-          contentContainerStyle={{marginHorizontal: 20}}
+          style={{marginTop: 8, width: '90%'}}
+          contentContainerStyle={{marginHorizontal: 4}}
           data={data}
-          keyExtrator={ item => String(item.id)}
+          keyExtrator={ question_id => String(question_id)}
           renderItem={ ({item}) => <ListItem data={item} /> }
-          onEndReached={LoadAPI}
-          onEndReachThreshold={0.1}
+          // onEndReached={LoadAPI}
+          // onEndReachThreshold={0.1}
           ListFooterComponent={ <FooterList Load={loading} /> }
         />
    </View>
@@ -52,9 +49,12 @@ export default function Comunidade() {
 function ListItem({data}) {
     return(
       <View style={styles.listItem}>
-        <Text style={styles.listText} >{data.full_name}</Text>
-        <Text style={styles.listText} >{data.description}</Text>
-        <View style={{marginHorizontal: 12, marginVertical: 4}} >
+        <View style={{backgroundColor: Colors.coral, borderRadius: 10}}>
+          <Text style={[styles.listText, { fontWeight: 'bold', fontSize: 12, color: Colors.white }]} >{data.user}</Text>
+        </View>
+        <Text style={[styles.listText, { fontSize: 18}]} >{data.question}</Text>
+        <Text style={styles.listText} >{data.correct_answer}</Text>
+        <View style={{marginHorizontal: 12, marginVertical: 4}}>
           <TouchableOpacity>
             <Icon name='heart-circle' size={28} color='#FF4136'/>
           </TouchableOpacity>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 4,
     marginVertical: 4,
-    elevation: 4
+    elevation: 4,
   },
   listText:{
     fontSize: 16,
