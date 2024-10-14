@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator, FlatList } from 'react-native';
 import Colors from '../../Components/Colors';
 import Loading from '../../Components/Loading';
 import UserServices from '../../Components/UserServices';
@@ -12,10 +12,8 @@ export default function Estudar() {
   const [ perguntas, setPerguntas ] = useState(null);
   const [ perguntaEscolhida, setPerguntaEscolhida ] = useState(null);
   const [ perguntaAtual, setPerguntaAtual ] = useState(null);
+  const [ respostasEmbaralhadas, setRespostasEmbaralhadas ] = useState([]);
 
-  useEffect(() => {
-
-  },[]);
   
   const buscarQuestions = async () => {
     setLoading(true)
@@ -29,9 +27,6 @@ export default function Estudar() {
     }
     
   }
-
-
-
   
   const virarQuestion = () => {
     setLoading(true);
@@ -52,12 +47,29 @@ export default function Estudar() {
           perguntaEscolhida.incorrect_answers[2]       
         ]
       })
+
+      // const embaralharArray = (array) => {
+      //     return array.sort(() => Math.random() - 0.5);
+      //  };
+      
+      // setRespostasEmbaralhadas(embaralharArray([...perguntaAtual.respostas])); // Cópia e embaralha
+
     }
-
-
     setLoading(false)
   }
+  
+  useEffect(() => {
+    const embaralharArray = (array) => {
+      return array.sort(() => Math.random() - 0.5);
+    };
+    try {
+      setRespostasEmbaralhadas(embaralharArray([...perguntaAtual.respostas])); // Cópia e embaralha
+      
+    } catch (error) {
+      alert("erro ao carregar respostas: " + error)
+    }
 
+  }, [perguntaAtual]);
   
     const rotateValue = useRef(new Animated.Value(0)).current;
   
@@ -78,6 +90,25 @@ export default function Estudar() {
       outputRange: ['0deg', '180deg'],
     });
 
+
+
+    const escolherRespostas = (resposta) => {
+      if (resposta === perguntaAtual.respostas[0]) {
+        alert("Resposta Certa");
+        
+      } else {
+        alert("Resposta Errada");
+        
+      }
+      // {backgroundColor: {escolherRespostas} ? "#0080000" : "#FF0000"}
+    }
+    
+    const renderItem = ({ item }) => (
+      <TouchableOpacity style={[styles.optionQuestion]} onPress={() => [escolherRespostas(item)]}>
+        <Text style={{fontSize: 16}}>{item}</Text>
+      </TouchableOpacity>
+    );
+
  return (
    <View style={styles.container} >
       <View style={styles.tileContainer}>
@@ -95,21 +126,18 @@ export default function Estudar() {
             (<Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
                 <View style={styles.questionContainer}>
                   <View>
-                    <Text style={{fontSize: 22}} >{perguntaEscolhida.question}</Text>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text>
                   </View>
-                  <View style={{gap: 8}}>
-                    <TouchableOpacity style={styles.optionQuestion}>
-                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[0]}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionQuestion}>
-                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[1]}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionQuestion}>
-                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[2]}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionQuestion}>
-                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[3]}</Text>
-                    </TouchableOpacity>
+                  <View>
+                    {respostasEmbaralhadas === null ? (<ActivityIndicator size={42}/>) : (
+                      <FlatList 
+                        data={respostasEmbaralhadas}
+                        renderItem={renderItem}
+                        
+                      />
+                    )
+                    
+                  }
                   </View>
                 </View>
             </Animated.View>)
@@ -176,9 +204,10 @@ const styles = StyleSheet.create({
   },
   optionQuestion:{
     backgroundColor: Colors.azulMuitoClaro,
-    borderWidth: 1,
+    borderWidth: 2,
     paddingVertical: 10,
     paddingHorizontal: 10,
-    borderRadius: 10
+    borderRadius: 10,
+    marginVertical: 4,
   }
 })
