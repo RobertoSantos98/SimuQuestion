@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import Colors from '../../Components/Colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+
+import ButtonThemes from '../../Components/ButtonThemes'
+
+
 
 export default function Home() {
+  
+  const [ data, setData ] = useState([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ error, setError ] = useState(null);
 
-    const [ data, setData ] = useState([]);
-    const [ loading, setLoading ] = useState(false);
-    const [ error, setError ] = useState(null);
-
-
+    const baseURL = 'https://s1207vdg9c.execute-api.us-east-1.amazonaws.com/question/theme'
 
 
  return (
@@ -57,16 +62,10 @@ export default function Home() {
         </View>
 
         <View style={{marginHorizontal: 20}}>
-          <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Escola os temas para Estudar</Text>
-          <View style={{gap : 4}}>
-            <FlatList style={styles.itemOption}>
-              <Text style={{marginHorizontal: 8}}>React</Text>
-            </FlatList>
-          </View>
-          <View>
-
-          </View>
+          <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Escolha os temas para Estudar</Text>
         </View>
+
+        <ButtonThemes/>
 
         <View style={{marginHorizontal: 20, marginVertical: 8}}>
             <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Últimas Perguntas Enviadas</Text>
@@ -113,11 +112,4 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     elevation: 8
   },
-  itemOption:{
-    backgroundColor: Colors.white,
-    width: '45%',
-    borderRadius: 12,
-    paddingVertical: 6,
-    borderWidth: 1
-  }
 })

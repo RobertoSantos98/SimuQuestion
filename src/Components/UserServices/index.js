@@ -54,6 +54,15 @@ const Register = async (usuarioDados) => {
 
 }
 
+const Question = async () => {
+
+   
+
+    const response = await axios.get(`${baseURL}/question/theme/Math-General`)
+
+    return response;
+}
 
 
-export default { Login, Register }
+
+export default { Login, Register, Question }

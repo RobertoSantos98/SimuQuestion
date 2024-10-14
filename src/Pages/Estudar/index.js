@@ -1,11 +1,62 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
 import Colors from '../../Components/Colors';
 import Loading from '../../Components/Loading';
+import UserServices from '../../Components/UserServices';
+
+
 
 export default function Estudar() {
 
   const [ loading, setLoading ] = useState(false);
+  const [ perguntas, setPerguntas ] = useState(null);
+  const [ perguntaEscolhida, setPerguntaEscolhida ] = useState(null);
+  const [ perguntaAtual, setPerguntaAtual ] = useState(null);
+
+  useEffect(() => {
+
+  },[]);
+  
+  const buscarQuestions = async () => {
+    setLoading(true)
+    try {
+      const response = await UserServices.Question()
+      setPerguntas(response.data);
+    } catch (error) {
+      alert(error)
+    } finally {
+      setLoading(false)
+    }
+    
+  }
+
+
+
+  
+  const virarQuestion = () => {
+    setLoading(true);
+    startRotation();
+    
+    if (perguntas) {
+      const perguntaIndex = Math.floor(Math.random() * perguntas.length);
+      const perguntaEscolhida = perguntas[perguntaIndex]
+      setPerguntaEscolhida(perguntaEscolhida);
+
+      setPerguntaAtual({
+        tema: perguntaEscolhida.theme,
+        Question: perguntaEscolhida.question,
+        respostas: [
+          perguntaEscolhida.correct_answer,
+          perguntaEscolhida.incorrect_answers[0],       
+          perguntaEscolhida.incorrect_answers[1],       
+          perguntaEscolhida.incorrect_answers[2]       
+        ]
+      })
+    }
+
+
+    setLoading(false)
+  }
 
   
     const rotateValue = useRef(new Animated.Value(0)).current;
@@ -17,7 +68,6 @@ export default function Estudar() {
         duration: 500, 
         useNativeDriver: true,
       }).start(() => {
-        
         rotateValue.setValue(0);
       });
     };
@@ -25,23 +75,50 @@ export default function Estudar() {
     
     const rotation = rotateValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '180deg'], 
+      outputRange: ['0deg', '180deg'],
     });
 
  return (
    <View style={styles.container} >
       <View style={styles.tileContainer}>
-        <Text style={{fontSize: 32, color: Colors.white, fontWeight: 'bold'}}>Redes de Computadores</Text>
+        <Text style={{fontSize: 32, color: Colors.white, fontWeight: 'bold'}}>{loading ? <Loading size={42}/> : (perguntaAtual ? perguntaAtual.tema : <ActivityIndicator size={42} color={Colors.white} />)  }</Text>
       </View>
 
       <View style={styles.card}>
-        <Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
-            <Loading size={50} color={Colors.coral} />
-        </Animated.View>
+        
+        { !perguntaAtual ? (
+          <Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
+            <View>
+              <ActivityIndicator size={42} color={Colors.coral}/>
+            </View>
+          </Animated.View>) : 
+            (<Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
+                <View style={styles.questionContainer}>
+                  <View>
+                    <Text style={{fontSize: 22}} >{perguntaEscolhida.question}</Text>
+                  </View>
+                  <View style={{gap: 8}}>
+                    <TouchableOpacity style={styles.optionQuestion}>
+                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[0]}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionQuestion}>
+                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[1]}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionQuestion}>
+                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[2]}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionQuestion}>
+                      <Text style={{fontSize: 16}}>{perguntaAtual.respostas[3]}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            </Animated.View>)
+        
+      }
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={startRotation}>
-        <Text style={{fontSize: 24, fontWeight: 'bold', color: Colors.white}}>Virar</Text>
+      <TouchableOpacity style={styles.button} onPress={perguntas != null ? virarQuestion : buscarQuestions}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', color: Colors.white}}>{perguntas != null ? "Virar" : "Começar"}</Text>
       </TouchableOpacity>
    </View>
   );
@@ -89,5 +166,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     paddingVertical: 10,
     borderRadius: 12
+  },
+  questionContainer:{
+    width:'100%',
+    height: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    gap: 12
+  },
+  optionQuestion:{
+    backgroundColor: Colors.azulMuitoClaro,
+    borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10
   }
 })
