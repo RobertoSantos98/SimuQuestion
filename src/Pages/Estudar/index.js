@@ -94,17 +94,20 @@ export default function Estudar() {
 
     const escolherRespostas = (resposta) => {
       if (resposta === perguntaAtual.respostas[0]) {
-        alert("Resposta Certa");
+        virarQuestion()
         
       } else {
         alert("Resposta Errada");
+        return false
         
       }
       // {backgroundColor: {escolherRespostas} ? "#0080000" : "#FF0000"}
     }
+    const avaliar = async (resposta) => {await escolherRespostas(resposta)};
+
     
     const renderItem = ({ item }) => (
-      <TouchableOpacity style={[styles.optionQuestion]} onPress={() => [escolherRespostas(item)]}>
+      <TouchableOpacity style={[styles.optionQuestion]} onPress={() => escolherRespostas(item)}>
         <Text style={{fontSize: 16}}>{item}</Text>
       </TouchableOpacity>
     );
@@ -209,5 +212,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
     marginVertical: 4,
+  },
+  respostaErrada:{
+    backgroundColor: "#FF0000"
   }
 })
