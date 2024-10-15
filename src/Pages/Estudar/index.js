@@ -30,6 +30,7 @@ export default function Estudar() {
   
   const virarQuestion = () => {
     setLoading(true);
+    setCor(null)
     startRotation();
     
     if (perguntas) {
@@ -90,24 +91,23 @@ export default function Estudar() {
       outputRange: ['0deg', '180deg'],
     });
 
-
+    const [ cor, setCor ] = useState(null);
 
     const escolherRespostas = (resposta) => {
       if (resposta === perguntaAtual.respostas[0]) {
+        setCor("#008000")
         virarQuestion()
-        
       } else {
         alert("Resposta Errada");
-        return false
+        setCor("#FF0000")
         
       }
       // {backgroundColor: {escolherRespostas} ? "#0080000" : "#FF0000"}
     }
-    const avaliar = async (resposta) => {await escolherRespostas(resposta)};
 
     
     const renderItem = ({ item }) => (
-      <TouchableOpacity style={[styles.optionQuestion]} onPress={() => escolherRespostas(item)}>
+      <TouchableOpacity style={[styles.optionQuestion, setCor != null && {backgroundColor: cor}]} onPress={() => escolherRespostas(item)}>
         <Text style={{fontSize: 16}}>{item}</Text>
       </TouchableOpacity>
     );
