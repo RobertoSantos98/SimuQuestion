@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { StyleSheet, Dimensions, TouchableOpacity, View, Text } from "react-native";
-import { Button } from "react-native-paper";
+import { StyleSheet, TouchableOpacity, View, Text, ScrollView } from "react-native";
 
 import Colors from "../Colors";
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,36 +10,69 @@ import Estudar from '../../Pages/Estudar';
 
 const Botao = () => {
   
-  const [ temas, setTemas ] = useState(["Math"]);
+  const [ temas, setTemas ] = useState([]);
   
-  
-  const [ buttonSelected, setButtonSelected ] = useState(false);
 
-  const handlePress = () => {
-    buttonSelected ? setButtonSelected(false) : setButtonSelected(true);
-    
+  const handlePress = (tema) => {
+
+    setTemas((prevTemas) => {
+
+      if (prevTemas.includes(tema)) {
+        console.log("removido " + tema);
+        return prevTemas.filter(t=> t !== tema);
+
+      } else {
+        console.log("adinionado " + tema);
+        return [...prevTemas, tema];
+      }
+    })
   }
+
+  const isSelected = (tema) => temas.includes(tema);
   
-  <Estudar temas={temas}/>
     
     return (
-        <View style={styles.container}>
-         <TouchableOpacity onPress={handlePress} style={[styles.buttonOption, {backgroundColor: buttonSelected ? Colors.coral : Colors.azulMedio}]} >
-            <Text>Matemática</Text>
-            <Icon name="plus" size={20} color={Colors.azulEscuro} />
-         </TouchableOpacity>
-         <TouchableOpacity onPress={handlePress} style={[styles.buttonOption, {backgroundColor: buttonSelected ? Colors.coral : Colors.azulMedio}]} >
-            <Text>Inglês</Text>
-            <Icon name="plus" size={20} color={Colors.azulEscuro} />
-         </TouchableOpacity>
-         <TouchableOpacity onPress={handlePress} style={[styles.buttonOption, {backgroundColor: buttonSelected ? Colors.coral : Colors.azulMedio}]} >
-            <Text>Redes</Text>
-            <Icon name="plus" size={20} color={Colors.azulEscuro} />
-         </TouchableOpacity>
-        
+      <View>
+        <ScrollView horizontal style={styles.container}>
+
+          <View>
+            <TouchableOpacity onPress={() => handlePress("Matemática")} style={[styles.buttonOption,isSelected("Matemática") && styles.selectedButton]} >
+                <Text>Matemática</Text>
+                <Icon name="plus" size={20} color={Colors.azulEscuro} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handlePress("Inglês")} style={[styles.buttonOption,isSelected("Inglês") && styles.selectedButton]} >
+                <Text>Inglês</Text>
+                <Icon name="plus" size={20} color={Colors.azulEscuro} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handlePress("Redes")} style={[styles.buttonOption,isSelected("Redes") && styles.selectedButton]} >
+                <Text>Redes</Text>
+                <Icon name="plus" size={20} color={Colors.azulEscuro} />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity onPress={() => handlePress("Programação")} style={[styles.buttonOption,isSelected("Programação") && styles.selectedButton]} >
+                <Text>Programação</Text>
+                <Icon name="plus" size={20} color={Colors.azulEscuro} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handlePress("POO")} style={[styles.buttonOption,isSelected("POO") && styles.selectedButton]} >
+                <Text>POO</Text>
+                <Icon name="plus" size={20} color={Colors.azulEscuro} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handlePress("Gerais")} style={[styles.buttonOption,isSelected("Gerais") && styles.selectedButton]} >
+                <Text>Gerais</Text>
+                <Icon name="plus" size={20} color={Colors.azulEscuro} />
+            </TouchableOpacity>
+          </View>
+
+      </ScrollView>
         <TouchableOpacity style={styles.buttonSalvar}>
             <Text style={{color: Colors.white, fontWeight: 'bold'}}>Salvar</Text>
         </TouchableOpacity>
+
       </View>
 
     )
@@ -48,8 +80,7 @@ const Botao = () => {
 
 const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
-      gap: 6
+      marginHorizontal: 20,
     },
     radioContainer: {
       flexDirection: 'row',
@@ -67,16 +98,22 @@ const styles = StyleSheet.create({
         borderRadius: 12, 
         paddingVertical: 8,
         marginVertical: 8,
+        marginHorizontal: '5%'
       },
     buttonOption:{
-      width: '40%',
+      width: 170,
       paddingVertical: 8,
       borderRadius: 20,
       borderWidth: 1,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: 10
+      paddingHorizontal: 10,
+      marginHorizontal: 4,
+      marginVertical: 4
+    },
+    selectedButton:{
+      backgroundColor: Colors.coral
     }
   });
 
