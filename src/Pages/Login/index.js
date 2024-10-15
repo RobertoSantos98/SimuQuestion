@@ -48,7 +48,32 @@ export default function Login( {onLogin} ) {
 
     }
     
+    const handleSubmitRegister = async () => {
+            const usuarioregister = {
+                email: emailRegister,
+                password: passwordRegister,
+                nome: nomeRegister
+            }
+            
+            setLoading(true);
 
+            try {
+
+                const response = await UserServices.Register(usuarioregister);
+                console.log("Usuário Registrado!");
+
+                setModalVisible(false);
+
+            } catch (error) {
+                alert(error);
+
+            } finally {
+                setLoading(false);
+            }
+
+
+
+    }
  return (
    <View style={styles.container}>
         <Image style={{marginBottom: "10%", width: '70%', height: '50%'}} source={require("../../Assets/logo.png")} />
@@ -63,7 +88,6 @@ export default function Login( {onLogin} ) {
                 <Text style={styles.create}>Crie sua conta</Text>
             </TouchableOpacity>
         </View>
-
         <Modal animationType='slide'
             transparent={true}
             visible={modalVisible}
@@ -77,7 +101,7 @@ export default function Login( {onLogin} ) {
                     <TextInput style={styles.input} placeholder='Digite Seu Email:' value={emailRegister} onChangeText={setEmailRegister} />
                     <TextInput style={styles.input} placeholder='Digite Seu Nome:' value={nomeRegister} onChangeText={setNomeRegister} />
                     <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={passwordRegister} onChangeText={setPasswordRegister} />
-                    <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
+                    <TouchableOpacity style={styles.button} onPress= {handleSubmitRegister}>
                         <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >Criar</Text>
                     </TouchableOpacity>
                 </View>
