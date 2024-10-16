@@ -4,6 +4,7 @@ import { View, StyleSheet, TextInput, Image, TouchableOpacity, Text, Modal } fro
 import Loading from '../../Components/Loading';
 import Colors from '../../Components/Colors';
 import UserServices from '../../Components/UserServices';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Login( {onLogin} ) {
 
@@ -97,9 +98,13 @@ export default function Login( {onLogin} ) {
         >
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
+                    <TouchableOpacity style={{alignSelf: 'flex-end', marginHorizontal: '5%', bottom: '12%'}} onPress={() => setModalVisible(false)} >
+                        <Icon name="close" size={28} color={Colors.white}/>
+                    </TouchableOpacity>
+                    
                     <Text style={[styles.title]} allowFontScaling={false}>Preencha os dados abaixo </Text>
-                    <TextInput style={styles.input} placeholder='Digite Seu Email:' value={emailRegister} onChangeText={setEmailRegister} />
                     <TextInput style={styles.input} placeholder='Digite Seu Nome:' value={nomeRegister} onChangeText={setNomeRegister} />
+                    <TextInput style={styles.input} placeholder='Digite Seu Email:' value={emailRegister} onChangeText={setEmailRegister} />
                     <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={passwordRegister} onChangeText={setPasswordRegister} />
                     <TouchableOpacity style={styles.button} onPress= {handleSubmitRegister}>
                         <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >Criar</Text>

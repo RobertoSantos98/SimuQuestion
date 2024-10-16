@@ -9,7 +9,7 @@ import Splash from './src/Components/Splash';
 
 export default function App() {
 
-  const [ logado, setLogado ] = useState(true);
+  const [ logado, setLogado ] = useState(false);
   const [ userName, setUserName ] = useState('');
   const [showSplash, setShowSplash] = useState(true);
 
