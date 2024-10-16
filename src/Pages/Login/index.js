@@ -32,7 +32,7 @@ export default function Login( {onLogin} ) {
             const response = await UserServices.Login(usuarioLogin);
             if (response) {
                 const userData ={
-                    name: email,
+                    nome: response.nome,
                     token: response.token
                 }
                 onLogin(userData);

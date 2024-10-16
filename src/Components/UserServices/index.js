@@ -16,13 +16,16 @@ const Login = async ( usuarioDados ) => {
                 'Content-Type':'application/json'
             },
         })
-    
-        const token = response.data.token;
-        await AsyncStorage.setItem('UsuarioToken', token);
+
+        const dados = {
+            token : response.data.token,
+            nome : response.data.nomeCompleto
+        }
+        await AsyncStorage.setItem('UsuarioToken', dados.token);
 
         alert("Usuario Logado com sucesso");
 
-        return token
+        return dados;
         
         
     } catch (error) {

@@ -8,9 +8,10 @@ import Comunidade from '../Comunidade';
 import Colors from '../../Components/Colors';
 import ButtonNew from '../../Components/ButtonNew';
 
-export default function Routes() {
+export default function Routes( {userName }) {
     
     const Tab = createBottomTabNavigator();
+
 
  return (
     <Tab.Navigator
@@ -31,7 +32,7 @@ export default function Routes() {
     >
         <Tab.Screen
             name="Home"
-            component={Home}
+            // component={Home}
             options={{
                 headerShown: false,
                 tabBarIcon: ({ color, size, focused }) => {
@@ -41,7 +42,9 @@ export default function Routes() {
                     return <Icon name='home-variant-outline' size={ size + 4 } color={ Colors.azulEscuro } />
                 }
             }}
-        />
+        >
+            {props => <Home {...props} userName={userName} />}
+        </Tab.Screen>
         <Tab.Screen
             name="Estudar"
             component={Estudar}

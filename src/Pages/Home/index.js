@@ -8,19 +8,22 @@ import ButtonThemes from '../../Components/ButtonThemes'
 
 
 
-export default function Home() {
+export default function Home( {userName} ) {
   
   const [ data, setData ] = useState([]);
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
 
-    const baseURL = 'https://s1207vdg9c.execute-api.us-east-1.amazonaws.com/question/theme'
+  const primeiroNome = userName.split(' ')[0];
+  
+
+  const baseURL = 'https://s1207vdg9c.execute-api.us-east-1.amazonaws.com/question/theme'
 
 
  return (
    <View style={styles.container} >
       <View style={{flexDirection: 'row', justifyContent:'space-between', marginHorizontal: 20, marginVertical: 20, alignItems: 'flex-end'}} >
-        <Text style={{fontSize:24, color: Colors.texto, fontWeight: 'bold'}} >Olá Raphael! </Text>
+        <Text style={{fontSize:24, color: Colors.texto, fontWeight: 'bold'}} >Olá, {primeiroNome}! </Text>
         <View style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 10, borderRadius: 12}} >
           <Text style={{color: Colors.white}}>Pontos</Text>
           <Text style={{color:Colors.white, fontSize: 24, fontWeight: 'bold'}}>1.720</Text>
@@ -28,7 +31,7 @@ export default function Home() {
       </View>
         <View style={styles.banner}>
           <Text style={{color: Colors.white, marginHorizontal: 20}} >Suas questões tiveram</Text>
-          <View style={{flexDirection:'row', marginHorizontal: 20, alignItems: 'flex-end'}} >
+          <View style={{flexDirection:'row', marginHorizontal: 20, alignItems: 'flex-end'}}>
             <Text style={{fontSize: 40, color: Colors.white,fontWeight: 'bold'}}>405 </Text>
             <Text style={{ color: Colors.white}}>Likes </Text>
           </View>

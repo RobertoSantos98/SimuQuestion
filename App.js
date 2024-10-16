@@ -10,7 +10,7 @@ import Splash from './src/Components/Splash';
 export default function App() {
 
   const [ logado, setLogado ] = useState(false);
-  const [ userName, setUserName ] = useState('');
+  const [ userName, setUserName ] = useState("");
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -23,7 +23,8 @@ export default function App() {
 
   const handleLogin = (userData) => {
       setLogado(true)
-      setUserName(userData.email)
+      setUserName(userData.nome)
+      console.log(userData.nome + "recebido no controller")
   }
 
   return (
@@ -32,7 +33,7 @@ export default function App() {
       
       {showSplash ? (
         <Splash /> 
-      ) : ( logado ? <Routes userName={userName} /> : <Login onLogin={handleLogin} /> )}
+      ) : ( logado ? <Routes userName={userName} /> : ( <Login onLogin={handleLogin} />) )}
     </NavigationContainer>
     
   );
