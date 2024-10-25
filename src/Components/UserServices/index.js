@@ -21,10 +21,8 @@ const Login = async ( usuarioDados ) => {
             token : response.data.token,
             nome : response.data.nomeCompleto
         }
+        
         await AsyncStorage.setItem('UsuarioToken', dados.token);
-
-        alert("Usuario Logado com sucesso");
-
         return dados;
         
         
@@ -57,11 +55,23 @@ const Register = async (usuarioDados) => {
 
 }
 
-const Question = async () => {
+const Question = async (questao) => {
 
-   
+    try {
+        const token = await AsyncStorage.getItem('tokenUsuarioLogado')
+        const response = await axios.post(`${baseURL}/question`, questao, {
+            headers:{
+                Authorization: `Bearer ${token}`,
+                'Content-Type':'application/json'
+            }
+        })
 
-    const response = await axios.get(`${baseURL}/question/theme/Math-General`)
+        return response
+        
+    } catch (error) {
+        alert(error)
+    }
+
 
     return response;
 }

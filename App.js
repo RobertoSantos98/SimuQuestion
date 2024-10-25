@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Login from './src/Pages/Login';
 import Routes from './src/Pages/Routes';
 import Splash from './src/Components/Splash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
@@ -21,10 +22,18 @@ export default function App() {
     return () => clearTimeout(timer); 
   }, []);
 
-  const handleLogin = (userData) => {
-      setLogado(true)
-      setUserName(userData.nome)
-      console.log(userData.nome + "recebido no controller")
+  const handleLogin = async (userData) => {
+
+    try {
+      setLogado(true);
+      setUserName(userData.nome);
+      await AsyncStorage.setItem("tokenUsuarioLogado", userData.token);
+      await AsyncStorage.setItem("nomeUsuarioLogado", userData.nome);
+      console.log(userData.nome + " recebido no controller"); 
+
+    } catch (error) {
+      console.log("Erro: " + error)
+    }
   }
 
   return (

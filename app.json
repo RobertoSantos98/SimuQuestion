@@ -4,7 +4,7 @@
     "slug": "SimuQuestion",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./scr/Assets/logo-SimuQuestion.png",
+    "icon": "../SimuQuestion/src/Assets/logo-SimuQuestion.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
