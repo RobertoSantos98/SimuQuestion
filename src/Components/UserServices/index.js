@@ -66,7 +66,11 @@ const Question = async (questao) => {
             }
         })
 
-        return response
+        if (response) {
+            return response       
+        } else {
+            alert("Algo deu errado, Verifique os campos e tente novamente.")
+        }
         
     } catch (error) {
         alert(error)
@@ -76,6 +80,17 @@ const Question = async (questao) => {
     return response;
 }
 
+const QuestionTemas = async (temas) => {
+    if (temas === null) {
+       return alert("Escolha dois temas")
+    }
+
+    const temasPesquisar = `${temas[0]}-${temas[1]}`
+
+    const response = await axios.get(`${baseURL}/question/theme/${temasPesquisar}`);
+    return response;
+}
 
 
-export default { Login, Register, Question }
+
+export default { Login, Register, Question, QuestionTemas }

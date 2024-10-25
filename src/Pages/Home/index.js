@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, ActivityIndicator } from 'react-native';
 import Colors from '../../Components/Colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -12,7 +12,6 @@ export default function Home( {userName} ) {
   
   const [ data, setData ] = useState([]);
   const [ loading, setLoading ] = useState(false);
-  const [ error, setError ] = useState(null);
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalOption, setModalOption ] = useState(false);
 
@@ -24,6 +23,7 @@ export default function Home( {userName} ) {
   const [ theme, setTheme ] = useState();
   
   const handleSubmitQuestion = async () => {
+
     const questaoEnviar = {
       question: questao,
       correct_answer: respostaCerta,
@@ -36,7 +36,7 @@ export default function Home( {userName} ) {
     try {
       const response = await UserServices.Question(questaoEnviar);
       if (response) {
-        alert("Question Enviada")
+        alert("Question Enviada");
         setQuestao('');
         setRespostaCerta('');
         setRespostaIncorretas([]);
@@ -97,7 +97,7 @@ export default function Home( {userName} ) {
         </View>
 
         <View style={{marginHorizontal: 20}}>
-          <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Escolha os temas para Estudar</Text>
+          <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Escolha 2 temas para Estudar</Text>
         </View>
 
         <ButtonThemes/>
@@ -129,7 +129,7 @@ export default function Home( {userName} ) {
                   <Icon name='chevron-down-box' size={28} color={Colors.azulClaro} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSubmitQuestion} style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 6, borderRadius: 12, marginVertical: 8}}>
-                  <Text style={{fontSize: 18, color: Colors.white}}>Enviar</Text>
+                  {loading? <ActivityIndicator size={24} color={Colors.white}/> : <Text style={{fontSize: 18, color: Colors.white}}>Enviar</Text> }
                 </TouchableOpacity>
               </View>
               

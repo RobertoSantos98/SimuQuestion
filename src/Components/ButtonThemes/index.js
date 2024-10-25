@@ -4,7 +4,8 @@ import { StyleSheet, TouchableOpacity, View, Text, ScrollView } from "react-nati
 
 import Colors from "../Colors";
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
-import Estudar from '../../Pages/Estudar';
+import UserServices from '../UserServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -29,6 +30,18 @@ const Botao = () => {
   }
 
   const isSelected = (tema) => temas.includes(tema);
+
+  const handleSubmit = async () => {
+
+      try {
+        const response = await UserServices.QuestionTemas(temas);
+        const jsonValue = JSON.stringify(response.data)
+        await AsyncStorage.setItem('Questions', jsonValue);
+        alert("Tudo pronto para estudar.");
+      } catch (error) {
+        alert(error)
+      }
+    }
   
     
     return (
@@ -69,7 +82,7 @@ const Botao = () => {
           </View>
 
       </ScrollView>
-        <TouchableOpacity style={styles.buttonSalvar}>
+        <TouchableOpacity onPress={handleSubmit} style={styles.buttonSalvar}>
             <Text style={{color: Colors.white, fontWeight: 'bold'}}>Salvar</Text>
         </TouchableOpacity>
 

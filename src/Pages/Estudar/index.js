@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator, 
 import Colors from '../../Components/Colors';
 import Loading from '../../Components/Loading';
 import UserServices from '../../Components/UserServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -18,8 +19,9 @@ export default function Estudar() {
   const buscarQuestions = async () => {
     setLoading(true)
     try {
-      const response = await UserServices.Question()
-      setPerguntas(response.data);
+      const response = await AsyncStorage.getItem('Questions');
+      const jsonValue = response ? JSON.parse(response) : [];
+      setPerguntas(jsonValue);
     } catch (error) {
       alert(error)
     } finally {
@@ -33,7 +35,7 @@ export default function Estudar() {
     setCor(null)
     startRotation();
     
-    if (perguntas) {
+    if (perguntas != null) {
       const perguntaIndex = Math.floor(Math.random() * perguntas.length);
       const perguntaEscolhida = perguntas[perguntaIndex]
       setPerguntaEscolhida(perguntaEscolhida);
@@ -48,12 +50,6 @@ export default function Estudar() {
           perguntaEscolhida.incorrect_answers[2]       
         ]
       })
-
-      // const embaralharArray = (array) => {
-      //     return array.sort(() => Math.random() - 0.5);
-      //  };
-      
-      // setRespostasEmbaralhadas(embaralharArray([...perguntaAtual.respostas])); // Cópia e embaralha
 
     }
     setLoading(false)
@@ -120,16 +116,18 @@ export default function Estudar() {
 
       <View style={styles.card}>
         
-        { !perguntaAtual ? (
+        { !perguntas ? (
           <Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
             <View>
+              <Text>Escolha os Temas na Pagina Inicio</Text>
               <ActivityIndicator size={42} color={Colors.coral}/>
             </View>
           </Animated.View>) : 
             (<Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
                 <View style={styles.questionContainer}>
                   <View>
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text>
+                    {/* Erro está aqui */}
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text> 
                   </View>
                   <View>
                     {respostasEmbaralhadas === null ? (<ActivityIndicator size={42}/>) : (
