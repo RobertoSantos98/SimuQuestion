@@ -11,6 +11,7 @@ import ProvasList from '../../Components/Provas';
 
 
 export default function Home( {userName} ) {
+  const [ pontos, setPontos ] = useState();
   
   const [ data, setData ] = useState([]);
   const [ loading, setLoading ] = useState(false);
@@ -26,7 +27,6 @@ export default function Home( {userName} ) {
   const [ theme, setTheme ] = useState();
 
   const [ todasProvas, setTodasProvas ] = useState([]);
-  const [ provasCarregadas, setProvasCarregadas ] = useState();
   const [ diaProva, setDiaProva ] = useState();
   const [ temaProva, setTemaProva ] = useState();
 
@@ -41,7 +41,8 @@ export default function Home( {userName} ) {
         alert(error)
       }
     }
-  }, [todasProvas]);
+    carregarProvas();
+  }, []);
 
 
   
@@ -85,22 +86,49 @@ export default function Home( {userName} ) {
     };
   
     try {
-      // Atualizando todasProvas usando a função de estado para garantir o valor atualizado
+      // Atualizando todasProvas usando a função de estado
       setTodasProvas((prevProvas) => {
         const updatedProvas = [...prevProvas, provas];
-  
-        // Convertendo o array atualizado para JSON e armazenando no AsyncStorage
-        const jsonValue = JSON.stringify(updatedProvas);
-        AsyncStorage.setItem("Provas", jsonValue);
-  
-        // return updatedProvas; // Retornando o novo estado para atualização
+        return updatedProvas; // Retornando o novo estado para atualização
       });
   
+      // Aguardar o armazenamento no AsyncStorage
+      const jsonValue = JSON.stringify([...todasProvas, provas]); // Incluindo o novo valor
+      await AsyncStorage.setItem("Provas", jsonValue);
+  
       setModalProvas(false);
+      setDiaProva('');
+      setTemaProva('');
     } catch (error) {
       alert(error);
     }
   };
+
+  const excluirProva = async (index) => {
+    try {
+      const updatedProvas = todasProvas.filter((_, i) => i !== index);
+      setTodasProvas(updatedProvas);
+      await AsyncStorage.setItem("Provas", JSON.stringify(updatedProvas));
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(()=>{
+    const chamarPontos = async () => {
+      try {
+        const pontosSalvos = await AsyncStorage.getItem("Pontos");
+        if (pontosSalvos) {
+          setPontos(pontosSalvos);
+        }
+      } catch (error) {
+        alert("Não foi possivel carregar os Pontos")
+      }
+    }
+
+    chamarPontos();
+
+  }, [pontos])
 
 
  return (
@@ -109,7 +137,7 @@ export default function Home( {userName} ) {
         <Text style={{fontSize:24, color: Colors.texto, fontWeight: 'bold'}} >Olá, {primeiroNome}! </Text>
         <View style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 10, borderRadius: 12}} >
           <Text style={{color: Colors.white}}>Pontos</Text>
-          <Text style={{color:Colors.white, fontSize: 24, fontWeight: 'bold'}}>1.720</Text>
+          <Text style={{color:Colors.white, fontSize: 24, fontWeight: 'bold'}}>{pontos}</Text>
         </View>
       </View>
         <View style={styles.banner}>
@@ -128,8 +156,7 @@ export default function Home( {userName} ) {
               </TouchableOpacity>
             </View>
 
-            {todasProvas === null? <Text>Você ainda não adicionou nenhuma prova</Text> : <ProvasList provas={todasProvas}/>}
-
+            {todasProvas.length === 0 ? <Text>Você ainda não adicionou nenhuma prova</Text> : <ProvasList provas={todasProvas} excluirProva={excluirProva} />}
         </View>
 
         <View style={{marginHorizontal: 20}}>
@@ -214,8 +241,8 @@ export default function Home( {userName} ) {
                   <Icon name='close' size={24}/>
                 </TouchableOpacity>
 
-                <TextInput style={styles.input} placeholder='Dia da Prova'/>
-                <TextInput style={styles.input} placeholder='Tema da Prova'/>
+                <TextInput style={styles.input} placeholder='Dia da Prova' value={diaProva} onChangeText={setDiaProva} />
+                <TextInput style={styles.input} placeholder='Tema da Prova' value={temaProva} onChangeText={setTemaProva} />
 
                 <TouchableOpacity onPress={handleProvas} style={[styles.buttonOptionModal, {backgroundColor: Colors.coral}]}>
                   <Text style={{color: Colors.white, fontWeight: 'bold'}}>Salvar</Text>

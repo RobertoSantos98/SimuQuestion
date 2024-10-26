@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Estudar() {
+  const [ pontos, setPontos ] = useState();
+  console.log(pontos)
 
   const [ loading, setLoading ] = useState(false);
   const [ perguntas, setPerguntas ] = useState(null);
@@ -91,7 +93,8 @@ export default function Estudar() {
     const escolherRespostas = (resposta) => {
       if (resposta === perguntaAtual.respostas[0]) {
         setCor("#008000")
-        virarQuestion()
+        virarQuestion();
+        adicionarPonto();
       } else {
         alert("Resposta Errada");
         setCor("#FF0000")
@@ -106,6 +109,16 @@ export default function Estudar() {
         <Text style={{fontSize: 16}}>{item}</Text>
       </TouchableOpacity>
     );
+
+    const adicionarPonto = async () => {
+      try {
+        const novosPontos = pontos + 1;
+        setPontos(novosPontos);
+        await AsyncStorage.setItem("Pontos", JSON.stringify(novosPontos));
+      } catch (error) {
+        alert("Não foi possível atualizar os Pontos");
+      }
+    };
 
  return (
    <View style={styles.container} >

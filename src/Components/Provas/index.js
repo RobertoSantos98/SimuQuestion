@@ -3,25 +3,32 @@ import { FlatList, View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../Colors';
 
-const ProvasList = ({ provas }) => {
-  const renderItem = ({ item }) => (
+const ProvasList = ({ provas, excluirProva }) => {
+
+  console.log(provas)
+  const renderItem = ({ item, index }) => (
     <View style={styles.conteudoProvas}>
       <View>
         <Text style={{ color: Colors.white, marginVertical: 4 }}> Prova Dia: <Text style={{ fontWeight: 'bold' }}>{item.diaProva}</Text></Text>
-        <Text style={{ color: Colors.white, marginVertical: 4 }}>{item.temaProva}</Text>
+        <Text style={{ color: Colors.white, marginVertical: 4, fontSize:18, marginHorizontal: 6, fontWeight: 'bold' }}>{item.temaProva}</Text>
       </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: Colors.coral,
-          height: 40,
-          width: 40,
-          borderRadius: 20,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Icon name="chevron-right" size={36} color={Colors.white} />
-      </TouchableOpacity>
+      <View style={{gap: 12, alignItems: 'flex-end'}} >
+      <TouchableOpacity onPress={() => excluirProva(index)}>
+          <Icon name='trash-can-outline' size={24} color={Colors.azulMuitoClaro} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: Colors.coral,
+            height: 40,
+            width: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Icon name="chevron-right" size={36} color={Colors.white} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -43,10 +50,11 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    height: 100,
     backgroundColor: Colors.azulEscuro,
     borderRadius: 10,
     marginHorizontal: 8,
-    width: '100%'
+    paddingHorizontal: 10,
+    width: 300
   },
 };
