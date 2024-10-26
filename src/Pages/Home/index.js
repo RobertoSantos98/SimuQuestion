@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ButtonThemes from '../../Components/ButtonThemes'
 import UserServices from '../../Components/UserServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProvasList from '../../Components/Provas';
 
 
 
@@ -14,6 +16,7 @@ export default function Home( {userName} ) {
   const [ loading, setLoading ] = useState(false);
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalOption, setModalOption ] = useState(false);
+  const [ modalProvas, setModalProvas ] = useState(false);
 
   const primeiroNome = userName.split(' ')[0];
 
@@ -21,6 +24,26 @@ export default function Home( {userName} ) {
   const [ respostaCerta, setRespostaCerta ] = useState();
   const [ respostaIncorretas, setRespostaIncorretas ] = useState([]);
   const [ theme, setTheme ] = useState();
+
+  const [ todasProvas, setTodasProvas ] = useState([]);
+  const [ provasCarregadas, setProvasCarregadas ] = useState();
+  const [ diaProva, setDiaProva ] = useState();
+  const [ temaProva, setTemaProva ] = useState();
+
+  useEffect(()=> {
+    const carregarProvas = async () => {
+
+      try {
+        const provasCarregadasMemoria = await AsyncStorage.getItem("Provas");
+        const jsonValue = JSON.parse(provasCarregadasMemoria);
+        setTodasProvas(jsonValue);
+      } catch (error) {
+        alert(error)
+      }
+    }
+  }, [todasProvas]);
+
+
   
   const handleSubmitQuestion = async () => {
 
@@ -40,7 +63,7 @@ export default function Home( {userName} ) {
         setQuestao('');
         setRespostaCerta('');
         setRespostaIncorretas([]);
-        setTheme('');
+        setTheme(null);
         setModalVisible(false);
       }
     } catch (error) {
@@ -50,6 +73,34 @@ export default function Home( {userName} ) {
     }
   }
 
+  const handleTheme = (tema) => {
+    setTheme(tema);
+    setModalOption(false);
+  }
+
+  const handleProvas = async () => {
+    const provas = {
+      diaProva: diaProva,
+      temaProva: temaProva,
+    };
+  
+    try {
+      // Atualizando todasProvas usando a função de estado para garantir o valor atualizado
+      setTodasProvas((prevProvas) => {
+        const updatedProvas = [...prevProvas, provas];
+  
+        // Convertendo o array atualizado para JSON e armazenando no AsyncStorage
+        const jsonValue = JSON.stringify(updatedProvas);
+        AsyncStorage.setItem("Provas", jsonValue);
+  
+        // return updatedProvas; // Retornando o novo estado para atualização
+      });
+  
+      setModalProvas(false);
+    } catch (error) {
+      alert(error);
+    }
+  };
 
 
  return (
@@ -72,28 +123,13 @@ export default function Home( {userName} ) {
         <View style={{marginLeft: 20, marginVertical: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }} >Provas Chegando</Text>
-              <TouchableOpacity style={{marginRight: 20}}>
+              <TouchableOpacity onPress={() => setModalProvas(true)} style={{marginRight: 20}}>
                 <Text style={{color: Colors.azulClaro, marginBottom: 10, fontWeight: 'bold' }}>Adicionar Prova</Text>
               </TouchableOpacity>
             </View>
-            
-            <ScrollView horizontal={true}>
 
-              <View style={styles.conteudoProvas} >
-                  <View>
-                      <Text style={{color: Colors.white, marginVertical: 4}}>Prova Dia: <Text style={{fontWeight: 'bold'}} >22/11</Text> </Text>
-                      <Text style={{color: Colors.white, marginVertical: 4}}>Redes de Computadores</Text>
-                      <Text style={{color: Colors.white, marginVertical: 4}}>Faltam 12 dias</Text>
-                  </View>
-                  <TouchableOpacity style={{backgroundColor: Colors.coral, height: 40, width: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}} >
-                    <Icon name='chevron-right' size={36} color={Colors.white} />
-                  </TouchableOpacity>
-              </View>
-              <View style={styles.conteudoProvas} >
-                  <Text style={{color: Colors.white, marginHorizontal: 20, marginVertical: 8}}>Prova Dia 22/11</Text>
-              </View>
+            {todasProvas === null? <Text>Você ainda não adicionou nenhuma prova</Text> : <ProvasList provas={todasProvas}/>}
 
-            </ScrollView>
         </View>
 
         <View style={{marginHorizontal: 20}}>
@@ -124,8 +160,8 @@ export default function Home( {userName} ) {
                 <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[0]} onChangeText={setRespostaIncorretas[0]} />
                 <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[1]} onChangeText={setRespostaIncorretas[1]} />
                 <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[2]} onChangeText={setRespostaIncorretas[2]} />
-                <TouchableOpacity style={[styles.input, {flexDirection: 'row' ,justifyContent: 'space-between', alignItems: 'center'}]} onPress={() => setModalOption(true)} >
-                  <Text style={{color: Colors.azulClaro}}>Selecione o Genero da Pergunta</Text>
+                <TouchableOpacity onPress={() => setModalOption(true)} style={[styles.input, {flexDirection: 'row' ,justifyContent: 'space-between', alignItems: 'center'}]} >
+                  {theme ? <Text>{theme}</Text> : <Text style={{color: Colors.azulClaro}}>Selecione o Genero da Pergunta</Text>}
                   <Icon name='chevron-down-box' size={28} color={Colors.azulClaro} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSubmitQuestion} style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 6, borderRadius: 12, marginVertical: 8}}>
@@ -133,9 +169,62 @@ export default function Home( {userName} ) {
                 </TouchableOpacity>
               </View>
               
-            </View>
+              <Modal visible={modalOption} animationType='none' transparent >
+                <View style={styles.modal}>
+                  <View style={[styles.containerModal, {width: "50%"}]}>
+                    <TouchableOpacity onPress={() => setModalOption(false)} style={{alignSelf: 'flex-end', marginHorizontal: 20}} >
+                      <Icon name='close' size={24}/>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity onPress={() => handleTheme("Redes")} style={styles.buttonOptionModal} >
+                      <Text>Redes</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleTheme("Inglês")} style={styles.buttonOptionModal}>
+                      <Text>Inglês</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleTheme("Programação")} style={styles.buttonOptionModal}>
+                      <Text>Programação</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleTheme("Matemática")} style={styles.buttonOptionModal}>
+                      <Text>Matemática</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleTheme("Teórico")} style={styles.buttonOptionModal}>
+                      <Text>Teórico</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleTheme("Gerais")} style={styles.buttonOptionModal}>
+                      <Text>Gerais</Text>
+                    </TouchableOpacity>
+
+                  </View>
+                </View>
+              </Modal>
+            </View>
           </Modal>
+
+          <Modal visible={modalProvas} animationType='slide' transparent >
+            <View style={styles.modal} >
+              <View style={[styles.containerModal, {backgroundColor: Colors.azulEscuro}]} >
+
+                <TouchableOpacity onPress={() => setModalProvas(false)} style={{alignSelf: 'flex-end', marginHorizontal: 20}} >
+                  <Icon name='close' size={24}/>
+                </TouchableOpacity>
+
+                <TextInput style={styles.input} placeholder='Dia da Prova'/>
+                <TextInput style={styles.input} placeholder='Tema da Prova'/>
+
+                <TouchableOpacity onPress={handleProvas} style={[styles.buttonOptionModal, {backgroundColor: Colors.coral}]}>
+                  <Text style={{color: Colors.white, fontWeight: 'bold'}}>Salvar</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View>
+          </Modal>
+
 
         
    </View>
@@ -212,5 +301,13 @@ const styles = StyleSheet.create({
     borderColor: Colors.white,
     borderRadius: 12,
     width: '95%'
+  },
+  buttonOptionModal:{
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    width: '90%',
+    paddingVertical: 8,
+    marginVertical: 4,
+    alignItems: 'center'
   }
 })

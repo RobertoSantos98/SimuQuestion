@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator, FlatList } from 'react-native';
 import Colors from '../../Components/Colors';
 import Loading from '../../Components/Loading';
-import UserServices from '../../Components/UserServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -127,7 +126,7 @@ export default function Estudar() {
                 <View style={styles.questionContainer}>
                   <View>
                     {/* Erro está aqui */}
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text> 
+                    {perguntaEscolhida? <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text> : <ActivityIndicator size={24} color={Colors.coral}/> } 
                   </View>
                   <View>
                     {respostasEmbaralhadas === null ? (<ActivityIndicator size={42}/>) : (
