@@ -9,11 +9,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProvasList from '../../Components/Provas';
 
 
-
 export default function Home( {userName} ) {
   const [ pontos, setPontos ] = useState();
   
-  const [ data, setData ] = useState([]);
   const [ loading, setLoading ] = useState(false);
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalOption, setModalOption ] = useState(false);
@@ -114,28 +112,21 @@ export default function Home( {userName} ) {
     }
   };
 
-  useEffect(()=>{
-    const chamarPontos = async () => {
-      try {
-        const pontosSalvos = await AsyncStorage.getItem("Pontos");
-        if (pontosSalvos) {
-          setPontos(pontosSalvos);
-        }
-      } catch (error) {
-        alert("Não foi possivel carregar os Pontos")
-      }
-    }
+  const carregarPontos = async () => {
+    const pontosSalvos = await AsyncStorage.getItem("Pontos");
+    setPontos(pontosSalvos ? JSON.parse(pontosSalvos) : 0);
+};
 
-    chamarPontos();
-
-  }, [pontos])
+useEffect(() => {
+    carregarPontos();
+}, [pontos]);
 
 
  return (
    <View style={styles.container} >
       <View style={{flexDirection: 'row', justifyContent:'space-between', marginHorizontal: 20, marginVertical: 20, alignItems: 'flex-end'}} >
         <Text style={{fontSize:24, color: Colors.texto, fontWeight: 'bold'}} >Olá, {primeiroNome}! </Text>
-        <View style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 10, borderRadius: 12}} >
+        <View style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 10, borderRadius: 12, alignItems: 'center'}} >
           <Text style={{color: Colors.white}}>Pontos</Text>
           <Text style={{color:Colors.white, fontSize: 24, fontWeight: 'bold'}}>{pontos}</Text>
         </View>

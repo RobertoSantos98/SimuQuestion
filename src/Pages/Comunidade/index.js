@@ -54,12 +54,6 @@ function ListItem({data}) {
         </View>
         <Text style={[styles.listText, { fontSize: 18}]} >{data.question}</Text>
         <Text style={styles.listText} >{data.correct_answer}</Text>
-        <View style={{marginHorizontal: 12, marginVertical: 4}}>
-          <TouchableOpacity>
-            <Icon name='heart-circle' size={28} color='#FF4136'/>
-          </TouchableOpacity>
-          
-        </View>
 
       </View>
     )

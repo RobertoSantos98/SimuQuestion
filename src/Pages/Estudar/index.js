@@ -64,7 +64,7 @@ export default function Estudar() {
       setRespostasEmbaralhadas(embaralharArray([...perguntaAtual.respostas])); // Cópia e embaralha
       
     } catch (error) {
-      alert("erro ao carregar respostas: " + error)
+      
     }
 
   }, [perguntaAtual]);
@@ -97,10 +97,10 @@ export default function Estudar() {
         adicionarPonto();
       } else {
         alert("Resposta Errada");
-        setCor("#FF0000")
+        setCor("#FF0000");
+        removerPonto();
         
       }
-      // {backgroundColor: {escolherRespostas} ? "#0080000" : "#FF0000"}
     }
 
     
@@ -116,9 +116,27 @@ export default function Estudar() {
         setPontos(novosPontos);
         await AsyncStorage.setItem("Pontos", JSON.stringify(novosPontos));
       } catch (error) {
-        alert("Não foi possível atualizar os Pontos");
+        console.log("Não foi possível atualizar os Pontos");
       }
     };
+
+    const removerPonto = async () => {
+      try {
+        const novosPontos = pontos-1;
+        setPontos(novosPontos);
+        await AsyncStorage.setItem("Pontos", JSON.stringify(novosPontos));
+      } catch (error) {
+        
+      }
+    }
+
+    const carregarPontos = async () => {
+      const pontosSalvos = await AsyncStorage.getItem("Pontos");
+      setPontos(pontosSalvos ? JSON.parse(pontosSalvos) : 0);
+  };
+  useEffect(() => {
+      carregarPontos();
+  }, [pontos]);
 
  return (
    <View style={styles.container} >
