@@ -50,33 +50,33 @@ const Botao = () => {
 
           <View>
             <TouchableOpacity onPress={() => handlePress("Matemática")} style={[styles.buttonOption,isSelected("Matemática") && styles.selectedButton]} >
-                <Text>Matemática</Text>
+                <Text>Matemática </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handlePress("Inglês")} style={[styles.buttonOption,isSelected("Inglês") && styles.selectedButton]} >
-                <Text>Inglês</Text>
+                <Text>Inglês </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handlePress("Redes")} style={[styles.buttonOption,isSelected("Redes") && styles.selectedButton]} >
-                <Text>Redes</Text>
+                <Text>Redes </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity onPress={() => handlePress("Programação")} style={[styles.buttonOption,isSelected("Programação") && styles.selectedButton]} >
-                <Text>Programação</Text>
+                <Text>Programação </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handlePress("POO")} style={[styles.buttonOption,isSelected("POO") && styles.selectedButton]} >
-                <Text>POO</Text>
+                <Text>Teórico </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handlePress("Gerais")} style={[styles.buttonOption,isSelected("Gerais") && styles.selectedButton]} >
-                <Text>Gerais</Text>
+                <Text>Gerais </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
           </View>

@@ -147,7 +147,12 @@ useEffect(() => {
               </TouchableOpacity>
             </View>
 
-            {todasProvas.length === 0 ? <Text>Você ainda não adicionou nenhuma prova</Text> : <ProvasList provas={todasProvas} excluirProva={excluirProva} />}
+            {todasProvas === null ? 
+            (<View style={{backgroundColor: Colors.azulEscuro, width: '90%', height: 100, borderRadius: 12, alignItems: 'center'}} >
+            <Text style={{color:Colors.white, marginTop: 16}}>Você ainda não adicionou nenhuma prova</Text> 
+            </View>)
+            : 
+            <ProvasList provas={todasProvas} excluirProva={excluirProva} />}
         </View>
 
         <View style={{marginHorizontal: 20}}>
@@ -195,27 +200,27 @@ useEffect(() => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleTheme("Redes")} style={styles.buttonOptionModal} >
-                      <Text>Redes</Text>
+                      <Text>Redes </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleTheme("Inglês")} style={styles.buttonOptionModal}>
-                      <Text>Inglês</Text>
+                      <Text>Inglês </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleTheme("Programação")} style={styles.buttonOptionModal}>
-                      <Text>Programação</Text>
+                      <Text>Programação </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleTheme("Matemática")} style={styles.buttonOptionModal}>
-                      <Text>Matemática</Text>
+                      <Text>Matemática </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleTheme("Teórico")} style={styles.buttonOptionModal}>
-                      <Text>Teórico</Text>
+                      <Text>Teórico </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleTheme("Gerais")} style={styles.buttonOptionModal}>
-                      <Text>Gerais</Text>
+                      <Text>Gerais </Text>
                     </TouchableOpacity>
 
                   </View>
