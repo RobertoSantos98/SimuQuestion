@@ -16,12 +16,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/Assets/logo-SimuQuestion.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.roberto_98.SimuQuestion"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "df35fd53-0d7b-4402-9ac8-817dd6b378fb"
+      }
     }
   }
 }
