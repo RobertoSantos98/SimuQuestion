@@ -28,6 +28,17 @@ export default function Home( {userName} ) {
   const [ diaProva, setDiaProva ] = useState();
   const [ temaProva, setTemaProva ] = useState();
 
+  const [ dia, setDia ] = useState('');
+
+  useEffect(()=>{
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2,'0');
+    const year = String(date.getFullYear());
+
+    setDia(`${day}/${month}/${year}`)
+  },[])
+
   useEffect(()=> {
     const carregarProvas = async () => {
 
@@ -119,7 +130,11 @@ export default function Home( {userName} ) {
 
 useEffect(() => {
     carregarPontos();
-}, [pontos]);
+
+    const interval = setInterval(carregarPontos, 1000)
+
+    return () => clearInterval(interval)
+}, []);
 
 
  return (
@@ -132,11 +147,11 @@ useEffect(() => {
         </View>
       </View>
         <View style={styles.banner}>
-          <Text style={{color: Colors.white, marginHorizontal: 20}} >Suas questões tiveram</Text>
-          <View style={{flexDirection:'row', marginHorizontal: 20, alignItems: 'flex-end'}}>
-            <Text style={{fontSize: 40, color: Colors.white,fontWeight: 'bold'}}>405 </Text>
-            <Text style={{ color: Colors.white}}>Likes </Text>
-          </View>
+            <View style={{ marginHorizontal: 20}}>
+              <Text style={{ color: Colors.white}}>Hoje é dia </Text>
+              <Text style={{fontSize: 28, color: Colors.white,fontWeight: 'bold'}}>{dia}</Text>
+            </View>
+            <Text style={{color: Colors.white, marginHorizontal: 20}} >Bons Estudos!</Text>
         </View>
 
         <View style={{marginLeft: 20, marginVertical: 10}}>

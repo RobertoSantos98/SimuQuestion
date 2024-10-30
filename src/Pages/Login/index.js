@@ -79,7 +79,7 @@ export default function Login( {onLogin} ) {
    <View style={styles.container}>
         <Image style={{marginBottom: "10%", width: '70%', height: '50%'}} source={require("../../Assets/logo.png")} />
         <TextInput style={styles.input} placeholder='Digite Seu Email:' value={email} onChangeText={setEmail}/>
-        <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={password} onChangeText={setPassword} />
+        <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={password} onChangeText={setPassword} secureTextEntry />
         <TouchableOpacity style={styles.button} onPress={handleSubmit} >
             <Text style={{fontSize:24, color: "#FFF", fontWeight:"bold"}} >{loading ? <Loading size={40} color={Colors.white}/> : "Entrar"}</Text>
         </TouchableOpacity>

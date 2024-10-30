@@ -16,7 +16,11 @@ export default function Estudar() {
   const [ perguntaAtual, setPerguntaAtual ] = useState(null);
   const [ respostasEmbaralhadas, setRespostasEmbaralhadas ] = useState([]);
 
-  
+  useEffect(()=> {
+    buscarQuestions();
+
+  }, [])
+
   const buscarQuestions = async () => {
     setLoading(true)
     try {
