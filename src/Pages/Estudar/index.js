@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator, 
 import Colors from '../../Components/Colors';
 import Loading from '../../Components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -16,10 +17,12 @@ export default function Estudar() {
   const [ perguntaAtual, setPerguntaAtual ] = useState(null);
   const [ respostasEmbaralhadas, setRespostasEmbaralhadas ] = useState([]);
 
-  useEffect(()=> {
-    buscarQuestions();
+  useFocusEffect(
+    React.useCallback(()=> {
+      buscarQuestions();
 
   }, [])
+);
 
   const buscarQuestions = async () => {
     setLoading(true)
@@ -160,8 +163,7 @@ export default function Estudar() {
             (<Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
                 <View style={styles.questionContainer}>
                   <View>
-                    {/* Erro está aqui */}
-                    {perguntaEscolhida? <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text> : <ActivityIndicator size={24} color={Colors.coral}/> } 
+                    {perguntaEscolhida === null ? <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text> : <ActivityIndicator size={24} color={Colors.coral}/> } 
                   </View>
                   <View>
                     {respostasEmbaralhadas === null ? (<ActivityIndicator size={42}/>) : (

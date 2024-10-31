@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, ActivityIndicator } from 'react-native';
 import Colors from '../../Components/Colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -44,13 +44,14 @@ export default function Home( {userName} ) {
 
       try {
         const provasCarregadasMemoria = await AsyncStorage.getItem("Provas");
-        const jsonValue = JSON.parse(provasCarregadasMemoria);
+        const jsonValue = provasCarregadasMemoria ? JSON.parse(provasCarregadasMemoria) : [];
         setTodasProvas(jsonValue);
       } catch (error) {
         alert(error)
       }
     }
     carregarProvas();
+
   }, []);
 
 
@@ -98,12 +99,14 @@ export default function Home( {userName} ) {
       // Atualizando todasProvas usando a função de estado
       setTodasProvas((prevProvas) => {
         const updatedProvas = [...prevProvas, provas];
+
+
+        AsyncStorage.setItem("Provas", JSON.stringify(updatedProvas))
+        .catch(error => alert(error));
+
         return updatedProvas; // Retornando o novo estado para atualização
+
       });
-  
-      // Aguardar o armazenamento no AsyncStorage
-      const jsonValue = JSON.stringify([...todasProvas, provas]); // Incluindo o novo valor
-      await AsyncStorage.setItem("Provas", jsonValue);
   
       setModalProvas(false);
       setDiaProva('');
@@ -142,7 +145,7 @@ useEffect(() => {
       <View style={{flexDirection: 'row', justifyContent:'space-between', marginHorizontal: 20, marginVertical: 20, alignItems: 'flex-end'}} >
         <Text style={{fontSize:24, color: Colors.texto, fontWeight: 'bold'}} >Olá, {primeiroNome}! </Text>
         <View style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 10, borderRadius: 12, alignItems: 'center'}} >
-          <Text style={{color: Colors.white}}>Pontos</Text>
+          <Text style={{color: Colors.white}}> Pontos </Text>
           <Text style={{color:Colors.white, fontSize: 24, fontWeight: 'bold'}}>{pontos}</Text>
         </View>
       </View>
@@ -162,7 +165,7 @@ useEffect(() => {
               </TouchableOpacity>
             </View>
 
-            {todasProvas === null ? 
+            {todasProvas <= 0 ? 
             (<View style={{backgroundColor: Colors.azulEscuro, width: '90%', height: 100, borderRadius: 12, alignItems: 'center'}} >
             <Text style={{color:Colors.white, marginTop: 16}}>Você ainda não adicionou nenhuma prova</Text> 
             </View>)
