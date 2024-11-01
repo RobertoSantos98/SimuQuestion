@@ -10,12 +10,14 @@ import { useFocusEffect } from '@react-navigation/native';
 export default function Estudar() {
   const [ pontos, setPontos ] = useState();
   console.log(pontos)
-
-  const [ loading, setLoading ] = useState(false);
-  const [ perguntas, setPerguntas ] = useState(null);
-  const [ perguntaEscolhida, setPerguntaEscolhida ] = useState(null);
-  const [ perguntaAtual, setPerguntaAtual ] = useState(null);
+  console.log(perguntas)
+  
+  const [ loading, setLoading ] = useState(true);
+  const [ perguntas, setPerguntas ] = useState([]);
+  const [ perguntaEscolhida, setPerguntaEscolhida ] = useState();
+  const [ perguntaAtual, setPerguntaAtual ] = useState();
   const [ respostasEmbaralhadas, setRespostasEmbaralhadas ] = useState([]);
+  const [ cor, setCor ] = useState(null);
 
   useFocusEffect(
     React.useCallback(()=> {
@@ -25,13 +27,20 @@ export default function Estudar() {
 );
 
   const buscarQuestions = async () => {
-    setLoading(true)
     try {
       const response = await AsyncStorage.getItem('Questions');
       const jsonValue = response ? JSON.parse(response) : [];
       setPerguntas(jsonValue);
+      console.log(jsonValue)
+
+      if(jsonValue.length > 0){
+        virarQuestion();
+      } else {
+        alert("Selecione até dois Temas na página Home.")
+      }
+
     } catch (error) {
-      alert(error)
+      alert("Selecione até dois temas no pagina HOME.")
     } finally {
       setLoading(false)
     }
@@ -43,41 +52,24 @@ export default function Estudar() {
     setCor(null)
     startRotation();
     
-    if (perguntas != null) {
+    if (perguntas.length > 0) {
       const perguntaIndex = Math.floor(Math.random() * perguntas.length);
-      const perguntaEscolhida = perguntas[perguntaIndex]
-      setPerguntaEscolhida(perguntaEscolhida);
-
+      const perguntaAleatoria = perguntas[perguntaIndex]
       setPerguntaAtual({
-        tema: perguntaEscolhida.theme,
-        Question: perguntaEscolhida.question,
+        tema: perguntaAleatoria.theme,
+        Question: perguntaAleatoria.question,
         respostas: [
-          perguntaEscolhida.correct_answer,
-          perguntaEscolhida.incorrect_answers[0],       
-          perguntaEscolhida.incorrect_answers[1],       
-          perguntaEscolhida.incorrect_answers[2]       
-        ]
-      })
+          perguntaAleatoria.correct_answer,
+          ...perguntaAleatoria.incorrect_answers,
+        ],
+      });
 
     }
     setLoading(false)
   }
   
-  useEffect(() => {
-    const embaralharArray = (array) => {
-      return array.sort(() => Math.random() - 0.5);
-    };
-    try {
-      setRespostasEmbaralhadas(embaralharArray([...perguntaAtual.respostas])); // Cópia e embaralha
-      
-    } catch (error) {
-      
-    }
-
-  }, [perguntaAtual]);
   
     const rotateValue = useRef(new Animated.Value(0)).current;
-  
     const startRotation = () => {
       
       Animated.timing(rotateValue, {
@@ -88,14 +80,19 @@ export default function Estudar() {
         rotateValue.setValue(0);
       });
     };
-  
+    
     
     const rotation = rotateValue.interpolate({
       inputRange: [0, 1],
       outputRange: ['0deg', '180deg'],
     });
 
-    const [ cor, setCor ] = useState(null);
+
+    useEffect(() => {
+      if (perguntaAtual?.respostas) {
+        setRespostasEmbaralhadas([...perguntaAtual.respostas].sort(() => Math.random() - 0.5));
+      }
+    }, [perguntaAtual]);
 
     const escolherRespostas = (resposta) => {
       if (resposta === perguntaAtual.respostas[0]) {
@@ -112,7 +109,7 @@ export default function Estudar() {
 
     
     const renderItem = ({ item }) => (
-      <TouchableOpacity style={[styles.optionQuestion, setCor != null && {backgroundColor: cor}]} onPress={() => escolherRespostas(item)}>
+      <TouchableOpacity style={[styles.optionQuestion, cor && {backgroundColor: cor}]} onPress={() => escolherRespostas(item)}>
         <Text style={{fontSize: 16}}>{item}</Text>
       </TouchableOpacity>
     );
@@ -139,11 +136,11 @@ export default function Estudar() {
 
     const carregarPontos = async () => {
       const pontosSalvos = await AsyncStorage.getItem("Pontos");
-      setPontos(pontosSalvos ? JSON.parse(pontosSalvos) : 0);
+      setPontos(pontosSalvos ? JSON.parse(pontosSalvos) : console.log("Não foi possivel salvar os pontos."));
   };
   useEffect(() => {
       carregarPontos();
-  }, [pontos]);
+  }, []);
 
  return (
    <View style={styles.container} >
@@ -159,31 +156,32 @@ export default function Estudar() {
               <Text>Escolha os Temas na Pagina Inicio</Text>
               <ActivityIndicator size={42} color={Colors.coral}/>
             </View>
-          </Animated.View>) : 
-            (<Animated.View  style={[styles.cardInside, { transform: [{rotateY: rotation}] } ]}>
+          </Animated.View>
+          ) : (
+              <Animated.View style={[styles.cardInside, { transform: [{ rotateY: rotation }] }]}>
                 <View style={styles.questionContainer}>
-                  <View>
-                    {perguntaEscolhida === null ? <Text style={{fontSize: 18, fontWeight: 'bold'}} >{perguntaEscolhida.question}</Text> : <ActivityIndicator size={24} color={Colors.coral}/> } 
-                  </View>
-                  <View>
-                    {respostasEmbaralhadas === null ? (<ActivityIndicator size={42}/>) : (
-                      <FlatList 
-                        data={respostasEmbaralhadas}
-                        renderItem={renderItem}
-                        
-                      />
-                    )
-                    
-                  }
-                  </View>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+                    {perguntaAtual ? perguntaAtual.Question : "Carregando pergunta..."}
+                  </Text>
+                  {respostasEmbaralhadas.length > 0 ? (
+                    <FlatList
+                      data={respostasEmbaralhadas}
+                      renderItem={renderItem}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  ) : (
+                    <ActivityIndicator size={42} color={Colors.coral}/>
+                  )}
                 </View>
-            </Animated.View>)
+              </Animated.View>
+            
+            )
         
       }
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={perguntas != null ? virarQuestion : buscarQuestions}>
-        <Text style={{fontSize: 24, fontWeight: 'bold', color: Colors.white}}>{perguntas != null ? "Virar" : "Começar"}</Text>
+      <TouchableOpacity style={styles.button} onPress={perguntas.length > 0 ? virarQuestion : buscarQuestions}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', color: Colors.white}}>{perguntas.length > 0 ? "Virar" : "Buscar Questions"}</Text>
       </TouchableOpacity>
    </View>
   );

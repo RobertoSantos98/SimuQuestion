@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Image, TouchableOpacity, Text, Modal } from 'react-native';
+import { View, StyleSheet, TextInput, Image, TouchableOpacity, Text, Modal, ImageBackground } from 'react-native';
 
 import Loading from '../../Components/Loading';
 import Colors from '../../Components/Colors';
@@ -76,7 +76,8 @@ export default function Login( {onLogin} ) {
 
     }
  return (
-   <View style={styles.container}>
+       <ImageBackground source={require('../../Assets/SimuQuestion-background.png')} resizeMode='cover' style={{flex:1, alignItems: 'center', justifyContent: 'center'}} >
+     {/* <View style={styles.container}> */}
         <Image style={{marginBottom: "10%", width: '70%', height: '50%'}} source={require("../../Assets/logo.png")} />
         <TextInput style={styles.input} placeholder='Digite Seu Email:' value={email} onChangeText={setEmail}/>
         <TextInput style={styles.input} placeholder='Digite Sua Senha:' value={password} onChangeText={setPassword} secureTextEntry />
@@ -114,14 +115,15 @@ export default function Login( {onLogin} ) {
             </View>
             
         </Modal>
-   </View>
+   {/* </View> */}
+   </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor:"#325B70",
+        // backgroundColor:"#325B70",
         alignItems: 'center',
         justifyContent: 'center'
     },

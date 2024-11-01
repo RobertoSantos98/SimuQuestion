@@ -82,13 +82,16 @@ const Question = async (questao) => {
 
 const QuestionTemas = async (temas) => {
     if (temas === null) {
-       return alert("Escolha dois temas")
+       alert("Escolha dois temas")
+    } else if (temas.length === 1 ){
+        alert("Selecione 2 temas para Estudar")
+    } else {
+        const temasPesquisar = `${temas[0]}-${temas[1]}`
+        console.log(temasPesquisar)
+        
+        const response = await axios.get(`${baseURL}/question/theme/${temasPesquisar}`);
+        return response;
     }
-
-    const temasPesquisar = `${temas[0]}-${temas[1]}`
-
-    const response = await axios.get(`${baseURL}/question/theme/${temasPesquisar}`);
-    return response;
 }
 
 

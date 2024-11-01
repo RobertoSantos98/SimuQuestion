@@ -139,6 +139,11 @@ useEffect(() => {
     return () => clearInterval(interval)
 }, []);
 
+const handleIncorrectQuestion = (index, value) => { 
+  const respostasIcorretasUpdate = [...respostaIncorretas];
+  respostasIcorretasUpdate[index] = value;
+  setRespostaIncorretas(respostasIcorretasUpdate)
+}
 
  return (
    <View style={styles.container} >
@@ -198,11 +203,11 @@ useEffect(() => {
 
                 <TextInput style={styles.input} placeholder='Questão' value={questao} onChangeText={setQuestao} />
                 <TextInput style={styles.input} placeholder='Resposta Certa' value={respostaCerta} onChangeText={setRespostaCerta} />
-                <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[0]} onChangeText={setRespostaIncorretas[0]} />
-                <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[1]} onChangeText={setRespostaIncorretas[1]} />
-                <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[2]} onChangeText={setRespostaIncorretas[2]} />
+                <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[0]} onChangeText={(text)=> handleIncorrectQuestion(0, text)} />
+                <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[1]} onChangeText={(text)=> handleIncorrectQuestion(1, text)} />
+                <TextInput style={styles.inputRespostasIncorretas} placeholder='Resposta Incorreta' value={respostaIncorretas[2]} onChangeText={(text)=> handleIncorrectQuestion(2, text)} />
                 <TouchableOpacity onPress={() => setModalOption(true)} style={[styles.input, {flexDirection: 'row' ,justifyContent: 'space-between', alignItems: 'center'}]} >
-                  {theme ? <Text>{theme}</Text> : <Text style={{color: Colors.azulClaro}}>Selecione o Genero da Pergunta</Text>}
+                  {theme ? <Text>{theme}</Text> : <Text style={{color: Colors.azulClaro}}>Selecione o Gênero da Pergunta</Text>}
                   <Icon name='chevron-down-box' size={28} color={Colors.azulClaro} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSubmitQuestion} style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 6, borderRadius: 12, marginVertical: 8}}>

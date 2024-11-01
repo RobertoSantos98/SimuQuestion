@@ -1,7 +1,7 @@
 
 const Colors = {
     white: '#FFFFFF',        // Branco puro para maior contraste
-    azulClaro: '#C7DCE3',    // Azul claro mais suave e arejado
+    azulClaro: '#A8C8D1',    // Azul claro mais suave e arejado
     azulMedio: '#5A8CAA',   // Azul médio um pouco mais vibrante
     azulEscuro: '#3A6D7F',     // Azul escuro mais profundo e elegante
     coral: '#F26A50',

@@ -34,12 +34,12 @@ const Botao = () => {
   const handleSubmit = async () => {
 
       try {
+        console.log(temas)
         const response = await UserServices.QuestionTemas(temas);
         const jsonValue = JSON.stringify(response.data)
         await AsyncStorage.setItem('Questions', jsonValue);
         alert("Tudo pronto para estudar.");
       } catch (error) {
-        alert(error)
       }
     }
   
@@ -70,7 +70,7 @@ const Botao = () => {
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => handlePress("POO")} style={[styles.buttonOption,isSelected("POO") && styles.selectedButton]} >
+            <TouchableOpacity onPress={() => handlePress("Teórico")} style={[styles.buttonOption,isSelected("Teórico") && styles.selectedButton]} >
                 <Text>Teórico </Text>
                 <Icon name="plus" size={20} color={Colors.azulEscuro} />
             </TouchableOpacity>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
       marginVertical: 4
     },
     selectedButton:{
-      backgroundColor: Colors.coral
+      backgroundColor: Colors.azulClaro
     }
   });
 
