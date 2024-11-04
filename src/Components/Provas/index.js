@@ -5,12 +5,16 @@ import Colors from '../Colors';
 
 const ProvasList = ({ provas, excluirProva }) => {
 
+  const textoLimite = (texto='', limite = 22) => {
+    return texto && texto.length > limite ? `${texto.substring(0, limite)}...` : texto;
+  }
+
   console.log(provas)
   const renderItem = ({ item, index }) => (
     <View style={styles.conteudoProvas}>
       <View>
         <Text style={{ color: Colors.white, marginVertical: 4 }}> Prova Dia: <Text style={{ fontWeight: 'bold' }}>{item.diaProva}</Text></Text>
-        <Text style={{ color: Colors.white, marginVertical: 4, fontSize:18, marginHorizontal: 6, fontWeight: 'bold' }}>{item.temaProva}</Text>
+        <Text style={{ color: Colors.white, marginVertical: 4, fontSize:18, marginHorizontal: 6, fontWeight: 'bold' }}>{textoLimite(item.temaProva, 20)}</Text>
       </View>
       <View style={{gap: 12, alignItems: 'flex-end'}} >
       <TouchableOpacity onPress={() => excluirProva(index)}>

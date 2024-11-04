@@ -76,7 +76,7 @@ export default function Login( {onLogin} ) {
 
     }
  return (
-       <ImageBackground source={require('../../Assets/SimuQuestion-background.png')} resizeMode='cover' style={{flex:1, alignItems: 'center', justifyContent: 'center'}} >
+       <ImageBackground source={require('../../Assets/SimuQuestion-background.png')} resizeMode='cover' style={styles.container} >
      {/* <View style={styles.container}> */}
         <Image style={{marginBottom: "10%", width: '70%', height: '50%'}} source={require("../../Assets/logo.png")} />
         <TextInput style={styles.input} placeholder='Digite Seu Email:' value={email} onChangeText={setEmail}/>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
 import Colors from '../../Components/Colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -7,6 +7,7 @@ import ButtonThemes from '../../Components/ButtonThemes'
 import UserServices from '../../Components/UserServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProvasList from '../../Components/Provas';
+import News from '../News';
 
 
 export default function Home( {userName} ) {
@@ -147,22 +148,22 @@ const handleIncorrectQuestion = (index, value) => {
 
  return (
    <View style={styles.container} >
-      <View style={{flexDirection: 'row', justifyContent:'space-between', marginHorizontal: 20, marginVertical: 20, alignItems: 'flex-end'}} >
+      <View style={{flexDirection: 'row', justifyContent:'space-between', marginHorizontal: 20, marginVertical: 10, alignItems: 'flex-end'}} >
         <Text style={{fontSize:24, color: Colors.texto, fontWeight: 'bold'}} >Olá, {primeiroNome}! </Text>
         <View style={{backgroundColor: Colors.coral, paddingHorizontal: 60, paddingVertical: 10, borderRadius: 12, alignItems: 'center'}} >
           <Text style={{color: Colors.white}}> Pontos </Text>
           <Text style={{color:Colors.white, fontSize: 24, fontWeight: 'bold'}}>{pontos}</Text>
         </View>
       </View>
-        <View style={styles.banner}>
+        <ImageBackground source={require('../../Assets/background-home.jpg')} resizeMode='cover' style={styles.banner}>
             <View style={{ marginHorizontal: 20}}>
               <Text style={{ color: Colors.white}}>Hoje é dia </Text>
               <Text style={{fontSize: 28, color: Colors.white,fontWeight: 'bold'}}>{dia}</Text>
             </View>
             <Text style={{color: Colors.white, marginHorizontal: 20}} >Bons Estudos!</Text>
-        </View>
+        </ImageBackground>
 
-        <View style={{marginLeft: 20, marginVertical: 10}}>
+        <View style={{marginLeft: 20, marginVertical: 5}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }} >Provas Chegando</Text>
               <TouchableOpacity onPress={() => setModalProvas(true)} style={{marginRight: 20}}>
@@ -178,19 +179,20 @@ const handleIncorrectQuestion = (index, value) => {
             <ProvasList provas={todasProvas} excluirProva={excluirProva} />}
         </View>
 
-        <View style={{marginHorizontal: 20}}>
+        <View style={{marginHorizontal: 20, marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Escolha 2 temas para Estudar</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <Text style={{color: Colors.azulClaro, marginBottom: 10, fontWeight: 'bold' }}>Enviar Pergunta</Text>
+          </TouchableOpacity>  
         </View>
 
         <ButtonThemes/>
 
-        <View style={{marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{color: Colors.texto, marginBottom: 10, fontWeight: 'bold' }}>Últimas Perguntas Enviadas</Text>
-            
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <Text style={{color: Colors.azulClaro, marginBottom: 10, fontWeight: 'bold' }}>Enviar Pergunta</Text>
-            </TouchableOpacity>  
+        <View style={{marginHorizontal: 20, alignItems: 'center', backgroundColor: Colors.azulEscuro, borderTopRightRadius: 10, borderTopLeftRadius: 10, borderBottomColor: Colors.white, borderBottomWidth: 1}}>
+            <Text style={{color: Colors.white, marginBottom: 5, fontWeight: 'bold' }}> Quadro de Notícias </Text>
         </View>
+          <News/>
+
         
           <Modal visible={modalVisible} animationType="slide" transparent >
             <View style={styles.modal} >
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
   banner:{
     backgroundColor: Colors.coral,
     width: '100%',
-    marginVertical: 12,
+    marginVertical: 10,
     paddingVertical: 24,
     gap: 12
   },
