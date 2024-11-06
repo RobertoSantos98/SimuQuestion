@@ -1,10 +1,10 @@
-##SimuQuestion App
+## SimuQuestion App
 SimuQuestion é um aplicativo de estudo e prática de perguntas e respostas que permite aos usuários estudar diversos temas, acompanhar pontuações e gerenciar provas e perguntas. Ele inclui funcionalidades como login, registro, seleção de temas, visualização de perguntas, e um sistema de pontuação que ajuda a monitorar o progresso.
 
-📖# Introdução
+# 📖 Introdução
 SimuQuestion é um aplicativo interativo para estudo e preparação, especialmente útil para estudantes e professores. Ele permite a criação e visualização de perguntas em diferentes temas, além de um sistema de pontuação para medir o desempenho. A interface é amigável e facilita a navegação, tornando o estudo mais acessível e divertido.
 
-##Recursos Principais
+## Recursos Principais
 Cadastro e Login: Autenticação segura para que os usuários acessem suas perguntas e pontuações.
 Seleção de Temas: Permite escolher entre diferentes temas para estudo.
 Perguntas Personalizadas: Opção para criar e enviar perguntas, incluindo respostas corretas e incorretas.
