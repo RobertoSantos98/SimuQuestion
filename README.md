@@ -73,5 +73,5 @@ Este projeto é para fins acadêmicos.
 
 Desenvolvido por [Roberto Santos](https://github.com/RobertoSantos98).
 
-Você pode comentar e me dar dicas de como melhorar na publicação do [linkedin] que fiz para esse APP: (https://www.linkedin.com/posts/robertosantos98_desenvolvimento-frontend-frontenddevelopment-activity-7259940733439119361-j1HR?utm_source=share&utm_medium=member_desktop&rcm=ACoAACcIWvgBDXfquJcTBQBqWA0NPWSwMEAMOfM)
+Você pode comentar e me dar dicas de como melhorar na publicação do [linkedin](https://www.linkedin.com/posts/robertosantos98_desenvolvimento-frontend-frontenddevelopment-activity-7259940733439119361-j1HR?utm_source=share&utm_medium=member_desktop&rcm=ACoAACcIWvgBDXfquJcTBQBqWA0NPWSwMEAMOfM) que fiz para esse APP: 
 
